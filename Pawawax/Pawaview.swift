@@ -55,7 +55,7 @@ class Pawaview: UIView {
             self.glowImageView.alpha = self.focused ? 0.5 : 0
             
             if self.focused {
-                self.transform = CGAffineTransformMakeScale(1.1, 1.1)
+                self.transform = CGAffineTransformMakeScale(1.05, 1.05)
                 self.addParallax()
             } else {
                 self.transform = CGAffineTransformIdentity
