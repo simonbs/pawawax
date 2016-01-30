@@ -9,8 +9,6 @@
 import UIKit
 
 class ViewController: UIViewController {
-    private let pawaview = LandscapeView()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -19,18 +17,28 @@ class ViewController: UIViewController {
         button.setTitle("This is the story all about how", forState: .Normal)
         button.verticalPawawaxEnabled = true
         
-        pawaview.translatesAutoresizingMaskIntoConstraints = false
+        let landscapeView1 = LandscapeView()
+        let landscapeView2 = LandscapeView()
+        
+        landscapeView1.translatesAutoresizingMaskIntoConstraints = false
+        landscapeView2.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(button)
-        view.addSubview(pawaview)
+        view.addSubview(landscapeView1)
+        view.addSubview(landscapeView2)
         
-        view.addConstraint(pawaview.centerXAnchor.constraintEqualToAnchor(view.centerXAnchor))
-        view.addConstraint(pawaview.centerYAnchor.constraintEqualToAnchor(view.centerYAnchor))
-        view.addConstraint(pawaview.widthAnchor.constraintEqualToConstant(816))
-        view.addConstraint(pawaview.heightAnchor.constraintEqualToConstant(480))
+        view.addConstraint(landscapeView1.leadingAnchor.constraintEqualToAnchor(view.leadingAnchor, constant: 90))
+        view.addConstraint(landscapeView1.centerYAnchor.constraintEqualToAnchor(view.centerYAnchor))
+        view.addConstraint(landscapeView1.widthAnchor.constraintEqualToConstant(816))
+        view.addConstraint(landscapeView1.heightAnchor.constraintEqualToConstant(480))
         
-        view.addConstraint(button.centerXAnchor.constraintEqualToAnchor(view.centerXAnchor))
-        view.addConstraint(button.bottomAnchor.constraintEqualToAnchor(pawaview.topAnchor, constant: -100))
+        view.addConstraint(landscapeView2.trailingAnchor.constraintEqualToAnchor(view.trailingAnchor, constant: -90))
+        view.addConstraint(landscapeView2.centerYAnchor.constraintEqualToAnchor(view.centerYAnchor))
+        view.addConstraint(landscapeView2.widthAnchor.constraintEqualToConstant(816))
+        view.addConstraint(landscapeView2.heightAnchor.constraintEqualToConstant(480))
+        
+        view.addConstraint(button.leadingAnchor.constraintEqualToAnchor(view.leadingAnchor, constant: 90))
+        view.addConstraint(button.bottomAnchor.constraintEqualToAnchor(landscapeView1.topAnchor, constant: -100))
     }
 }
 
