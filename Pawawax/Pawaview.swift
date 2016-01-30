@@ -75,11 +75,11 @@ class Pawaview: UIView {
     }
     
     private func addParallax() {
-        glowImageView.currentPawawaxEffect = PawawaxEffect.motionEffectsForParallaxUsingRotation(0.1, translation: bounds.width / 2)
+        let rotation: CGFloat = 0.05
+        glowImageView.currentPawawaxEffect = PawawaxEffect.motionEffectsForParallaxUsingRotation(rotation, translation: bounds.width / 2)
 
         let filteredSubviews = contentView.subviews.filter({ $0 != glowImageView })
-        
-        contentView.currentPawawaxEffect = PawawaxEffect.motionEffectsForParallaxUsingRotation(0.1, translation: 10)
+        contentView.currentPawawaxEffect = PawawaxEffect.motionEffectsForParallaxUsingRotation(rotation, translation: 10)
         filteredSubviews.enumerate().reverse().forEach { idx, view in
             // Interpolate the translation linearly
             let maxTranslation: CGFloat = 10
