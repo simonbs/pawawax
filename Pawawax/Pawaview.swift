@@ -13,6 +13,40 @@ class Pawaview: UIView {
     let contentView = UIView()
     private let glowImageView = UIImageView()
     
+    // Alpha of glow when the view has focus
+    private static let GlowAlpha: CGFloat = 0.4
+    // Scale of the view when focused
+    private static let FocusScale: CGFloat = 1.05
+    // Rotation of the motion effect applied to the view
+    private static let Rotation: CGFloat = 0.05
+    // Translation of the motion effect applied to the view
+    private static let Translation: CGFloat = 10
+    
+    // Maximum translation of the motion effect applied to the subviews.
+    // The translation is interpolated linearly.
+    private static let SubviewsMaxTranslation: CGFloat = 10
+    // Minimum translation of the motion effect applied to the subviews.
+    // The translation is interpolated linearly.
+    private static let SubviewsMinTranslation: CGFloat = 5
+    // Maximum scale applied to the subviews.
+    // The scale is interpolated linearly.
+    private static let SubviewsMaxScale: CGFloat = 1.15
+    // Minimum scale applied to the subviews.
+    // The scale is interpolated linearly.
+    private static let SubviewsMinScale: CGFloat = 1
+    
+    // Opacity of shadow when not focused
+    private static let ShadowAlpha: Float = 0.6
+    // Opacity of shadow when focused
+    private static let ShadowAlphaFocused: Float = 0.8
+    
+    // Size factor for the shadow when not focused.
+    // This is calculated as the height of the view divided by the factor.
+    private static let ShadowFactor: CGFloat = 14
+    // Size factor for the shadow when focused.
+    // This is calculated as the height of the view divided by the factor.
+    private static let ShadowFactorFocused: CGFloat = 10
+    
     init() {
         super.init(frame: CGRectZero)
         glowImageView.image = UIImage(named: "glow")
@@ -52,10 +86,10 @@ class Pawaview: UIView {
         coordinator.addCoordinatedAnimations({
             self.removeParallax()
             self.glowImageView.hidden = !self.focused
-            self.glowImageView.alpha = self.focused ? 0.5 : 0
+            self.glowImageView.alpha = self.focused ? Pawaview.GlowAlpha : 0
             
             if self.focused {
-                self.transform = CGAffineTransformMakeScale(1.05, 1.05)
+                self.transform = CGAffineTransformMakeScale(Pawaview.FocusScale, Pawaview.FocusScale)
                 self.addParallax()
             } else {
                 self.transform = CGAffineTransformIdentity
@@ -67,28 +101,23 @@ class Pawaview: UIView {
     }
     
     private func updateShadow() {
-        let sizeFactor: CGFloat = focused ? 8 : 12
+        let sizeFactor: CGFloat = focused ? Pawaview.ShadowFactorFocused : Pawaview.ShadowFactor
         layer.shadowColor = UIColor.blackColor().CGColor
-        layer.shadowOpacity = focused ? 0.8 : 0.6
+        layer.shadowOpacity = focused ? Pawaview.ShadowAlphaFocused : Pawaview.ShadowAlpha
         layer.shadowOffset = CGSizeMake(0, bounds.height / sizeFactor)
         layer.shadowRadius = bounds.height / sizeFactor
     }
     
     private func addParallax() {
-        let rotation: CGFloat = 0.05
-        glowImageView.currentPawawaxEffect = PawawaxEffect.motionEffectsForParallaxUsingRotation(rotation, translation: bounds.width / 2)
-
+        glowImageView.currentPawawaxEffect = PawawaxEffect.motionEffectsForParallaxUsingRotation(Pawaview.Rotation, translation: bounds.width / 2)
         let filteredSubviews = contentView.subviews.filter({ $0 != glowImageView })
-        contentView.currentPawawaxEffect = PawawaxEffect.motionEffectsForParallaxUsingRotation(rotation, translation: 10)
+        contentView.currentPawawaxEffect = PawawaxEffect.motionEffectsForParallaxUsingRotation(Pawaview.Rotation, translation: Pawaview.Translation)
         filteredSubviews.enumerate().reverse().forEach { idx, view in
             // Interpolate the translation linearly
-            let maxTranslation: CGFloat = 10
-            let minTranslation: CGFloat = 5
-            let translation = (maxTranslation - minTranslation) / CGFloat(filteredSubviews.count) * CGFloat(idx)
+            let translation = (Pawaview.SubviewsMaxTranslation - Pawaview.SubviewsMinTranslation) / CGFloat(filteredSubviews.count) * CGFloat(idx)
             view.currentPawawaxEffect = PawawaxEffect.motionEffectsForParallaxUsingRotation(0, translation: translation)
             // Interpolate the scale linearly
-            let maxScale: CGFloat = 1.15
-            let scale: CGFloat = 1 + (maxScale - 1) / CGFloat(filteredSubviews.count) * CGFloat(idx)
+            let scale: CGFloat = Pawaview.SubviewsMinScale + (Pawaview.SubviewsMaxScale - Pawaview.SubviewsMinScale) / CGFloat(filteredSubviews.count) * CGFloat(idx)
             view.transform = CGAffineTransformMakeScale(scale, scale)
         }
     }
