@@ -9,14 +9,20 @@
 import Foundation
 import UIKit
 
+// MARK: - Pawaview
+
 class Pawaview: UIView {
     let contentView = UIView()
     private let glowImageView = UIImageView()
     
     // Alpha of glow when the view has focus
-    private static let GlowAlpha: CGFloat = 0.4
+    private static let GlowAlpha: CGFloat = 0.3
+    // Scale applied to the glow. The default length of the glow
+    // equals the longest side of the view.
+    private static let GlowScale: CGFloat = 1.4
+    
     // Scale of the view when focused
-    private static let FocusScale: CGFloat = 1.05
+    private static let FocusScale: CGFloat = 1.088
     // Rotation of the motion effect applied to the view
     private static let Rotation: CGFloat = 0.05
     // Translation of the motion effect applied to the view
@@ -49,6 +55,14 @@ class Pawaview: UIView {
     
     init() {
         super.init(frame: CGRectZero)
+        setup()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    private func setup() {
         glowImageView.image = UIImage(named: "glow")
         glowImageView.layer.zPosition = 1000
         glowImageView.alpha = 0
@@ -63,32 +77,33 @@ class Pawaview: UIView {
         addConstraint(contentView.topAnchor.constraintEqualToAnchor(topAnchor))
         addConstraint(contentView.bottomAnchor.constraintEqualToAnchor(bottomAnchor))
     }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func canBecomeFocused() -> Bool {
-        return true
-    }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         updateShadow()
         
-        let glowImageLength = max(bounds.width, bounds.height)
-        glowImageView.frame = CGRectMake((bounds.width - glowImageLength) / 2, -glowImageLength / 2, glowImageLength, glowImageLength)
+        let glowImageLength = max(bounds.width, bounds.height) * Pawaview.GlowScale
+        glowImageView.frame = CGRect(
+            x: (bounds.width - glowImageLength) / 2,
+            y: -glowImageLength / 2,
+            width: glowImageLength,
+            height: glowImageLength)
     }
     
     override func didUpdateFocusInContext(context: UIFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
         super.didUpdateFocusInContext(context, withAnimationCoordinator: coordinator)
-
+        guard let nextFocusedView = context.nextFocusedView else {
+            removeParallax()
+            return
+        }
+        
+        let isAncestorFocused = focused || isDescendantOfView(nextFocusedView)
         coordinator.addCoordinatedAnimations({
             self.removeParallax()
-            self.glowImageView.hidden = !self.focused
-            self.glowImageView.alpha = self.focused ? Pawaview.GlowAlpha : 0
+            self.glowImageView.hidden = !isAncestorFocused
+            self.glowImageView.alpha = isAncestorFocused ? Pawaview.GlowAlpha : 0
             
-            if self.focused {
+            if isAncestorFocused {
                 self.transform = CGAffineTransformMakeScale(Pawaview.FocusScale, Pawaview.FocusScale)
                 self.addParallax()
             } else {
@@ -131,6 +146,55 @@ class Pawaview: UIView {
         }
     }
 }
+
+// MARK: - UIView ancestor swizzling
+
+extension UIView {
+    // http://nshipster.com/swift-objc-runtime/
+    public override class func initialize() {
+        struct Static {
+            static var token: dispatch_once_t = 0
+        }
+        
+        // Make sure we aren't dealing with a subclass
+        guard self == UIView.self else { return }
+        
+        dispatch_once(&Static.token) {
+            let originalSelector = Selector("didUpdateFocusInContext:withAnimationCoordinator:")
+            let swizzledSelector = Selector("pawawax_didUpdateFocusInContext:withAnimationCoordinator:")
+            
+            let originalMethod = class_getInstanceMethod(self, originalSelector)
+            let swizzledMethod = class_getInstanceMethod(self, swizzledSelector)
+            
+            let didAddMethod = class_addMethod(self, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))
+            
+            if didAddMethod {
+                class_replaceMethod(self, swizzledSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod))
+            } else {
+                method_exchangeImplementations(originalMethod, swizzledMethod)
+            }
+        }
+    }
+    
+    func pawawax_didUpdateFocusInContext(context: UIFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
+        self.pawawax_didUpdateFocusInContext(context, withAnimationCoordinator: coordinator)
+        if !isKindOfClass(Pawaview.self) {
+            notifyPawaviewsOfFocusChange(self, inContext: context, withAnimationCoordinator: coordinator)
+        }
+    }
+    
+    private func notifyPawaviewsOfFocusChange(view: UIView, inContext context: UIFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
+        if let meAsAPawaview = view as? Pawaview {
+            meAsAPawaview.didUpdateFocusInContext(context, withAnimationCoordinator: coordinator)
+        }
+        
+        view.subviews.forEach {
+            notifyPawaviewsOfFocusChange($0, inContext: context, withAnimationCoordinator: coordinator)
+        }
+    }
+}
+
+// MARK: - Button helpers
 
 extension UIButton {
     private struct AssociatedKeys {
@@ -209,6 +273,8 @@ extension UIButton {
     }
 }
 
+// MARK: - Effect on UIView
+
 private extension UIView {
     private struct AssociatedKeys {
         static var CurrentPawawaxEffect = "pawawax_currentPawawaxEffect"
@@ -231,6 +297,8 @@ private extension UIView {
         }
     }
 }
+
+// MARK: - PawawaxEffect
 
 private struct PawawaxEffect {
     private static func motionEffectsForParallaxUsingRotation(rotation: CGFloat, translation: CGFloat) -> UIMotionEffectGroup {

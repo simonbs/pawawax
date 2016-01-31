@@ -9,6 +9,24 @@
 import Foundation
 import UIKit
 
+class LandscapeContainerView: FocusableView {
+    let landscapeView = LandscapeView()
+    
+    override init() {
+        super.init()
+        landscapeView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(landscapeView)
+        addConstraint(landscapeView.leadingAnchor.constraintEqualToAnchor(leadingAnchor))
+        addConstraint(landscapeView.trailingAnchor.constraintEqualToAnchor(trailingAnchor))
+        addConstraint(landscapeView.topAnchor.constraintEqualToAnchor(topAnchor))
+        addConstraint(landscapeView.bottomAnchor.constraintEqualToAnchor(bottomAnchor))
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 class LandscapeView: Pawaview {
     override init() {
         super.init()

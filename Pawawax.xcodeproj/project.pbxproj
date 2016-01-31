@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		720EB8301C5D0AC500DD4EA9 /* FocusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720EB82F1C5D0AC500DD4EA9 /* FocusableView.swift */; };
 		729AF20B1C5C0C370008EA89 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729AF20A1C5C0C370008EA89 /* AppDelegate.swift */; };
 		729AF20D1C5C0C370008EA89 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729AF20C1C5C0C370008EA89 /* ViewController.swift */; };
 		729AF2121C5C0C370008EA89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 729AF2111C5C0C370008EA89 /* Assets.xcassets */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		720EB82F1C5D0AC500DD4EA9 /* FocusableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocusableView.swift; sourceTree = "<group>"; };
 		729AF2071C5C0C370008EA89 /* Pawawax.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pawawax.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		729AF20A1C5C0C370008EA89 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		729AF20C1C5C0C370008EA89 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -58,6 +60,7 @@
 				729AF20C1C5C0C370008EA89 /* ViewController.swift */,
 				729AF2191C5C0C4C0008EA89 /* Pawaview.swift */,
 				72A7EF711C5C1D5300A8215B /* LandscapeView.swift */,
+				720EB82F1C5D0AC500DD4EA9 /* FocusableView.swift */,
 				729AF2111C5C0C370008EA89 /* Assets.xcassets */,
 				729AF2131C5C0C370008EA89 /* Info.plist */,
 			);
@@ -136,6 +139,7 @@
 				72A7EF721C5C1D5300A8215B /* LandscapeView.swift in Sources */,
 				729AF21A1C5C0C4C0008EA89 /* Pawaview.swift in Sources */,
 				729AF20D1C5C0C370008EA89 /* ViewController.swift in Sources */,
+				720EB8301C5D0AC500DD4EA9 /* FocusableView.swift in Sources */,
 				729AF20B1C5C0C370008EA89 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
