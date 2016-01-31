@@ -48,6 +48,14 @@ class Pawaview: UIView {
     // Opacity of the shadow when focused.
     private static let ShadowAlphaFocused: CGFloat = 0.5
     
+    // Whether or not to perform parallaxing
+    var adjustsWhenAncestorFocused = true {
+        didSet {
+            // If we are not adjusting, we should not display the default shadow
+            shadowImageView.hidden = !adjustsWhenAncestorFocused
+        }
+    }
+    
     init() {
         super.init(frame: CGRectZero)
         setup()
@@ -112,6 +120,10 @@ class Pawaview: UIView {
     
     override func didUpdateFocusInContext(context: UIFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
         super.didUpdateFocusInContext(context, withAnimationCoordinator: coordinator)
+        guard adjustsWhenAncestorFocused else {
+            removeParallax()
+            return
+        }
         guard let nextFocusedView = context.nextFocusedView else {
             removeParallax()
             return
