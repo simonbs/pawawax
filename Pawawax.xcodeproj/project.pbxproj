@@ -7,23 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		720EB8301C5D0AC500DD4EA9 /* FocusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720EB82F1C5D0AC500DD4EA9 /* FocusableView.swift */; };
-		729AF20B1C5C0C370008EA89 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729AF20A1C5C0C370008EA89 /* AppDelegate.swift */; };
-		729AF20D1C5C0C370008EA89 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729AF20C1C5C0C370008EA89 /* ViewController.swift */; };
 		729AF2121C5C0C370008EA89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 729AF2111C5C0C370008EA89 /* Assets.xcassets */; };
-		729AF21A1C5C0C4C0008EA89 /* Pawaview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729AF2191C5C0C4C0008EA89 /* Pawaview.swift */; };
-		72A7EF721C5C1D5300A8215B /* LandscapeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A7EF711C5C1D5300A8215B /* LandscapeView.swift */; };
+		72FCBB801C5E452B00E908CA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FCBB731C5E452B00E908CA /* AppDelegate.swift */; };
+		72FCBB811C5E452B00E908CA /* FirstSampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FCBB761C5E452B00E908CA /* FirstSampleViewController.swift */; };
+		72FCBB821C5E452B00E908CA /* LandscapeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FCBB771C5E452B00E908CA /* LandscapeView.swift */; };
+		72FCBB831C5E452B00E908CA /* SecondSampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FCBB791C5E452B00E908CA /* SecondSampleViewController.swift */; };
+		72FCBB841C5E452B00E908CA /* VacationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FCBB7A1C5E452B00E908CA /* VacationView.swift */; };
+		72FCBB851C5E452B00E908CA /* Pawawax.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FCBB7C1C5E452B00E908CA /* Pawawax.swift */; };
+		72FCBB861C5E452B00E908CA /* FocusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FCBB7E1C5E452B00E908CA /* FocusableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		720EB82F1C5D0AC500DD4EA9 /* FocusableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocusableView.swift; sourceTree = "<group>"; };
 		729AF2071C5C0C370008EA89 /* Pawawax.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pawawax.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		729AF20A1C5C0C370008EA89 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		729AF20C1C5C0C370008EA89 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		729AF2111C5C0C370008EA89 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		729AF2131C5C0C370008EA89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		729AF2191C5C0C4C0008EA89 /* Pawaview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pawaview.swift; sourceTree = "<group>"; };
-		72A7EF711C5C1D5300A8215B /* LandscapeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandscapeView.swift; sourceTree = "<group>"; };
+		72FCBB731C5E452B00E908CA /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		72FCBB761C5E452B00E908CA /* FirstSampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstSampleViewController.swift; sourceTree = "<group>"; };
+		72FCBB771C5E452B00E908CA /* LandscapeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandscapeView.swift; sourceTree = "<group>"; };
+		72FCBB791C5E452B00E908CA /* SecondSampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondSampleViewController.swift; sourceTree = "<group>"; };
+		72FCBB7A1C5E452B00E908CA /* VacationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VacationView.swift; sourceTree = "<group>"; };
+		72FCBB7C1C5E452B00E908CA /* Pawawax.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pawawax.swift; sourceTree = "<group>"; };
+		72FCBB7E1C5E452B00E908CA /* FocusableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocusableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +60,89 @@
 		729AF2091C5C0C370008EA89 /* Pawawax */ = {
 			isa = PBXGroup;
 			children = (
-				729AF20A1C5C0C370008EA89 /* AppDelegate.swift */,
-				729AF20C1C5C0C370008EA89 /* ViewController.swift */,
-				729AF2191C5C0C4C0008EA89 /* Pawaview.swift */,
-				72A7EF711C5C1D5300A8215B /* LandscapeView.swift */,
-				720EB82F1C5D0AC500DD4EA9 /* FocusableView.swift */,
 				729AF2111C5C0C370008EA89 /* Assets.xcassets */,
-				729AF2131C5C0C370008EA89 /* Info.plist */,
+				72FCBB711C5E452B00E908CA /* Source */,
+				72FCBB871C5E452E00E908CA /* Supporting files */,
 			);
 			path = Pawawax;
+			sourceTree = "<group>";
+		};
+		72FCBB711C5E452B00E908CA /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				72FCBB721C5E452B00E908CA /* Application */,
+				72FCBB741C5E452B00E908CA /* Pages */,
+				72FCBB7B1C5E452B00E908CA /* Pawawax */,
+				72FCBB7D1C5E452B00E908CA /* Utilities */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		72FCBB721C5E452B00E908CA /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				72FCBB731C5E452B00E908CA /* AppDelegate.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		72FCBB741C5E452B00E908CA /* Pages */ = {
+			isa = PBXGroup;
+			children = (
+				72FCBB751C5E452B00E908CA /* First */,
+				72FCBB781C5E452B00E908CA /* Second */,
+			);
+			path = Pages;
+			sourceTree = "<group>";
+		};
+		72FCBB751C5E452B00E908CA /* First */ = {
+			isa = PBXGroup;
+			children = (
+				72FCBB761C5E452B00E908CA /* FirstSampleViewController.swift */,
+				72FCBB771C5E452B00E908CA /* LandscapeView.swift */,
+			);
+			path = First;
+			sourceTree = "<group>";
+		};
+		72FCBB781C5E452B00E908CA /* Second */ = {
+			isa = PBXGroup;
+			children = (
+				72FCBB791C5E452B00E908CA /* SecondSampleViewController.swift */,
+				72FCBB7A1C5E452B00E908CA /* VacationView.swift */,
+			);
+			path = Second;
+			sourceTree = "<group>";
+		};
+		72FCBB7B1C5E452B00E908CA /* Pawawax */ = {
+			isa = PBXGroup;
+			children = (
+				72FCBB7C1C5E452B00E908CA /* Pawawax.swift */,
+			);
+			path = Pawawax;
+			sourceTree = "<group>";
+		};
+		72FCBB7D1C5E452B00E908CA /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				72FCBB7E1C5E452B00E908CA /* FocusableView.swift */,
+				72FCBB7F1C5E452B00E908CA /* Views */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		72FCBB7F1C5E452B00E908CA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		72FCBB871C5E452E00E908CA /* Supporting files */ = {
+			isa = PBXGroup;
+			children = (
+				729AF2131C5C0C370008EA89 /* Info.plist */,
+			);
+			name = "Supporting files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -136,11 +214,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				72A7EF721C5C1D5300A8215B /* LandscapeView.swift in Sources */,
-				729AF21A1C5C0C4C0008EA89 /* Pawaview.swift in Sources */,
-				729AF20D1C5C0C370008EA89 /* ViewController.swift in Sources */,
-				720EB8301C5D0AC500DD4EA9 /* FocusableView.swift in Sources */,
-				729AF20B1C5C0C370008EA89 /* AppDelegate.swift in Sources */,
+				72FCBB861C5E452B00E908CA /* FocusableView.swift in Sources */,
+				72FCBB831C5E452B00E908CA /* SecondSampleViewController.swift in Sources */,
+				72FCBB801C5E452B00E908CA /* AppDelegate.swift in Sources */,
+				72FCBB841C5E452B00E908CA /* VacationView.swift in Sources */,
+				72FCBB851C5E452B00E908CA /* Pawawax.swift in Sources */,
+				72FCBB811C5E452B00E908CA /* FirstSampleViewController.swift in Sources */,
+				72FCBB821C5E452B00E908CA /* LandscapeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  FirstSampleViewController.swift
 //  Pawawaps
 //
 //  Created by Simon Støvring on 29/01/2016.
@@ -8,11 +8,22 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class FirstSampleViewController: UIViewController {
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        title = "First"
+        edgesForExtendedLayout = .Bottom
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let scrollView = UIScrollView()
+        scrollView.clipsToBounds = false
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         
         let contentView = UIView()
@@ -80,7 +91,7 @@ class ViewController: UIViewController {
         scrollView.addConstraint(contentView.bottomAnchor.constraintEqualToAnchor(scrollView.bottomAnchor))
         scrollView.addConstraint(contentView.widthAnchor.constraintEqualToAnchor(scrollView.widthAnchor))
         
-        contentView.addConstraint(verticalButton.leadingAnchor.constraintEqualToAnchor(contentView.leadingAnchor, constant: 90))
+        contentView.addConstraint(verticalButton.centerXAnchor.constraintEqualToAnchor(contentView.centerXAnchor))
         contentView.addConstraint(verticalButton.topAnchor.constraintEqualToAnchor(contentView.topAnchor, constant: 90))
         
         contentView.addConstraint(landscapeView1.leadingAnchor.constraintEqualToAnchor(contentView.leadingAnchor, constant: 90))
