@@ -15,6 +15,8 @@
 		72FCBB841C5E452B00E908CA /* VacationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FCBB7A1C5E452B00E908CA /* VacationView.swift */; };
 		72FCBB851C5E452B00E908CA /* Pawawax.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FCBB7C1C5E452B00E908CA /* Pawawax.swift */; };
 		72FCBB861C5E452B00E908CA /* FocusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FCBB7E1C5E452B00E908CA /* FocusableView.swift */; };
+		72FCBB891C5E4A7600E908CA /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FCBB881C5E4A7600E908CA /* PhotosViewController.swift */; };
+		72FCBB8B1C5E4D0100E908CA /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FCBB8A1C5E4D0100E908CA /* PhotoCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		72FCBB7A1C5E452B00E908CA /* VacationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VacationView.swift; sourceTree = "<group>"; };
 		72FCBB7C1C5E452B00E908CA /* Pawawax.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pawawax.swift; sourceTree = "<group>"; };
 		72FCBB7E1C5E452B00E908CA /* FocusableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocusableView.swift; sourceTree = "<group>"; };
+		72FCBB881C5E4A7600E908CA /* PhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
+		72FCBB8A1C5E4D0100E908CA /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +112,8 @@
 			isa = PBXGroup;
 			children = (
 				72FCBB791C5E452B00E908CA /* SecondSampleViewController.swift */,
+				72FCBB881C5E4A7600E908CA /* PhotosViewController.swift */,
+				72FCBB8A1C5E4D0100E908CA /* PhotoCollectionViewCell.swift */,
 				72FCBB7A1C5E452B00E908CA /* VacationView.swift */,
 			);
 			path = Second;
@@ -215,9 +221,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				72FCBB861C5E452B00E908CA /* FocusableView.swift in Sources */,
+				72FCBB891C5E4A7600E908CA /* PhotosViewController.swift in Sources */,
 				72FCBB831C5E452B00E908CA /* SecondSampleViewController.swift in Sources */,
 				72FCBB801C5E452B00E908CA /* AppDelegate.swift in Sources */,
 				72FCBB841C5E452B00E908CA /* VacationView.swift in Sources */,
+				72FCBB8B1C5E4D0100E908CA /* PhotoCollectionViewCell.swift in Sources */,
 				72FCBB851C5E452B00E908CA /* Pawawax.swift in Sources */,
 				72FCBB811C5E452B00E908CA /* FirstSampleViewController.swift in Sources */,
 				72FCBB821C5E452B00E908CA /* LandscapeView.swift in Sources */,

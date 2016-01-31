@@ -23,25 +23,44 @@ class SecondSampleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let parisVacationView = VacationView()
-        let londonVacationView = VacationView()
+        let parisVacationView = VacationContainerView()
+        let londonVacationView = VacationContainerView()
+        let romeVacationView = VacationContainerView()
         
         parisVacationView.translatesAutoresizingMaskIntoConstraints = false
         londonVacationView.translatesAutoresizingMaskIntoConstraints = false
+        romeVacationView.translatesAutoresizingMaskIntoConstraints = false
         
-        parisVacationView.titleLabel.text = "PARIS"
-        londonVacationView.titleLabel.text = "LONDON"
+        parisVacationView.vacationView.titleLabel.text = "PARIS"
+        londonVacationView.vacationView.titleLabel.text = "LON\nDON"
+        romeVacationView.vacationView.titleLabel.text = "ROME"
         
-        parisVacationView.imageView.image = UIImage(named: "paris")
-        londonVacationView.imageView.image = UIImage(named: "london")
+        parisVacationView.vacationView.imageView.image = UIImage(named: "paris")
+        londonVacationView.vacationView.imageView.image = UIImage(named: "london")
+        romeVacationView.vacationView.imageView.image = UIImage(named: "rome")
+        
+        let photosController = PhotosViewController()
+        photosController.view.translatesAutoresizingMaskIntoConstraints = false
+        addChildViewController(photosController)
+        view.addSubview(photosController.view)
+        photosController.didMoveToParentViewController(self)
         
         view.addSubview(parisVacationView)
         view.addSubview(londonVacationView)
+        view.addSubview(romeVacationView)
         
         view.addConstraint(parisVacationView.leadingAnchor.constraintEqualToAnchor(view.leadingAnchor, constant: 90))
         view.addConstraint(parisVacationView.topAnchor.constraintEqualToAnchor(view.topAnchor, constant: 60))
         
-        view.addConstraint(londonVacationView.trailingAnchor.constraintEqualToAnchor(view.trailingAnchor, constant: -90))
+        view.addConstraint(londonVacationView.centerXAnchor.constraintEqualToAnchor(view.centerXAnchor))
         view.addConstraint(londonVacationView.topAnchor.constraintEqualToAnchor(view.topAnchor, constant: 60))
+        
+        view.addConstraint(romeVacationView.trailingAnchor.constraintEqualToAnchor(view.trailingAnchor, constant: -90))
+        view.addConstraint(romeVacationView.topAnchor.constraintEqualToAnchor(view.topAnchor, constant: 60))
+        
+        view.addConstraint(photosController.view.leadingAnchor.constraintEqualToAnchor(view.leadingAnchor))
+        view.addConstraint(photosController.view.trailingAnchor.constraintEqualToAnchor(view.trailingAnchor))
+        view.addConstraint(photosController.view.topAnchor.constraintEqualToAnchor(parisVacationView.bottomAnchor, constant: 60))
+        view.addConstraint(photosController.view.heightAnchor.constraintEqualToConstant(400))
     }
 }

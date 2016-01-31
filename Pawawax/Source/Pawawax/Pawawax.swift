@@ -12,6 +12,8 @@ import UIKit
 // MARK: - Pawaview
 
 class Pawaview: UIView {
+    private static let defaultEffect = PawawaxEffect.motionEffectsForParallaxUsingRotation(Pawaview.Rotation, translation: Pawaview.Translation)
+    
     let contentView = UIView()
     private let glowImageView = UIImageView(image: UIImage(named: "glow"))
     private let shadowImageView = UIImageView(image: UIImage(named: "shadow"))
@@ -55,6 +57,9 @@ class Pawaview: UIView {
             shadowImageView.hidden = !adjustsWhenAncestorFocused
         }
     }
+    
+    // Whether or not the view is currently adjusting
+    private var isCurrentlyAdjusting = false
     
     init() {
         super.init(frame: CGRectZero)
@@ -120,14 +125,12 @@ class Pawaview: UIView {
     
     override func didUpdateFocusInContext(context: UIFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
         super.didUpdateFocusInContext(context, withAnimationCoordinator: coordinator)
-        guard adjustsWhenAncestorFocused else {
+        if isCurrentlyAdjusting {
             removeParallax()
-            return
         }
-        guard let nextFocusedView = context.nextFocusedView else {
-            removeParallax()
-            return
-        }
+        
+        guard adjustsWhenAncestorFocused else { return }
+        guard let nextFocusedView = context.nextFocusedView else { return }
         
         let isAncestorFocused = focused || isDescendantOfView(nextFocusedView)
         coordinator.addCoordinatedAnimations({
@@ -135,14 +138,15 @@ class Pawaview: UIView {
             let duration = UIView.inheritedAnimationDuration() + extraDuration
             UIView.beginAnimations(nil, context: nil)
             UIView.setAnimationDuration(duration)
-            self.removeParallax()
             self.glowImageView.hidden = !isAncestorFocused
             self.glowImageView.alpha = isAncestorFocused ? Pawaview.GlowAlpha : 0
-            
+
             if isAncestorFocused {
+                self.isCurrentlyAdjusting = true
                 self.transform = CGAffineTransformMakeScale(Pawaview.FocusScale, Pawaview.FocusScale)
                 self.addParallax()
             } else {
+                self.isCurrentlyAdjusting = false
                 self.transform = CGAffineTransformIdentity
             }
 
@@ -156,7 +160,7 @@ class Pawaview: UIView {
     private func addParallax() {
         glowImageView.currentPawawaxEffect = PawawaxEffect.motionEffectsForParallaxUsingRotation(Pawaview.Rotation, translation: bounds.width / 2)
         let filteredSubviews = contentView.subviews.filter({ $0 != glowImageView })
-        currentPawawaxEffect = PawawaxEffect.motionEffectsForParallaxUsingRotation(Pawaview.Rotation, translation: Pawaview.Translation)
+        currentPawawaxEffect = Pawaview.defaultEffect
         filteredSubviews.enumerate().reverse().forEach { idx, view in
             // Interpolate the translation linearly
             let translation = (Pawaview.SubviewsMaxTranslation - Pawaview.SubviewsMinTranslation) / CGFloat(filteredSubviews.count) * CGFloat(idx)
@@ -175,9 +179,45 @@ class Pawaview: UIView {
             view.transform = CGAffineTransformIdentity
         }
     }
+
+    override func pressesBegan(presses: Set<UIPress>, withEvent event: UIPressesEvent?) {
+        guard adjustsWhenAncestorFocused else { return }
+        let isSelect = presses.filter({ $0.type == .Select }).count > 0
+        if isSelect && isCurrentlyAdjusting {
+            pushViewIn()
+        }
+    }
+    
+    override func pressesEnded(presses: Set<UIPress>, withEvent event: UIPressesEvent?) {
+        guard adjustsWhenAncestorFocused else { return }
+        let isSelect = presses.filter({ $0.type == .Select }).count > 0
+        if isSelect && isCurrentlyAdjusting {
+            popViewOut()
+        }
+    }
+    
+    override func pressesCancelled(presses: Set<UIPress>, withEvent event: UIPressesEvent?) {
+        guard adjustsWhenAncestorFocused else { return }
+        let isSelect = presses.filter({ $0.type == .Select }).count > 0
+        if isSelect && isCurrentlyAdjusting {
+            popViewOut()
+        }
+    }
+    
+    private func pushViewIn() {
+        UIView.animateWithDuration(0.12) {
+            self.transform = CGAffineTransformIdentity
+        }
+    }
+    
+    private func popViewOut() {
+        UIView.animateWithDuration(0.12) {
+            self.transform = CGAffineTransformMakeScale(Pawaview.FocusScale, Pawaview.FocusScale)
+        }
+    }
 }
 
-// MARK: - UIView ancestor swizzling
+// MARK: - UIView swizzling
 
 extension UIView {
     // http://nshipster.com/swift-objc-runtime/
@@ -192,17 +232,7 @@ extension UIView {
         dispatch_once(&Static.token) {
             let originalSelector = Selector("didUpdateFocusInContext:withAnimationCoordinator:")
             let swizzledSelector = Selector("pawawax_didUpdateFocusInContext:withAnimationCoordinator:")
-            
-            let originalMethod = class_getInstanceMethod(self, originalSelector)
-            let swizzledMethod = class_getInstanceMethod(self, swizzledSelector)
-            
-            let didAddMethod = class_addMethod(self, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))
-            
-            if didAddMethod {
-                class_replaceMethod(self, swizzledSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod))
-            } else {
-                method_exchangeImplementations(originalMethod, swizzledMethod)
-            }
+            swizzleOriginalSelector(originalSelector, replaceWithSelector: swizzledSelector)
         }
     }
     
@@ -220,6 +250,100 @@ extension UIView {
         
         view.subviews.forEach {
             notifyPawaviewsOfFocusChange($0, inContext: context, withAnimationCoordinator: coordinator)
+        }
+    }
+
+    // Helper for swizzling
+    internal class func swizzleOriginalSelector(originalSelector: Selector, replaceWithSelector swizzledSelector: Selector) {
+        let originalMethod = class_getInstanceMethod(self, originalSelector)
+        let swizzledMethod = class_getInstanceMethod(self, swizzledSelector)
+        
+        let didAddMethod = class_addMethod(self, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))
+        
+        if didAddMethod {
+            class_replaceMethod(self, swizzledSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod))
+        } else {
+            method_exchangeImplementations(originalMethod, swizzledMethod)
+        }
+    }
+}
+
+// MARK: - UICollectionViewView swizzling
+
+extension UICollectionView {
+    // http://nshipster.com/swift-objc-runtime/
+    public override class func initialize() {
+        struct Static {
+            static var token: dispatch_once_t = 0
+        }
+        
+        // Make sure we aren't dealing with a subclass
+        guard self == UICollectionView.self else { return }
+        
+        dispatch_once(&Static.token) {
+            let originalBeganSelector = Selector("pressesBegan:withEvent:")
+            let swizzledBeganSelector = Selector("pawawax_pressesBegan:withEvent:")
+            
+            let originalEndedSelector = Selector("pressesEnded:withEvent:")
+            let swizzledEndedSelector = Selector("pawawax_pressesEnded:withEvent:")
+            
+            let originalCancelledSelector = Selector("pressesCancelled:withEvent:")
+            let swizzledCancelledSelector = Selector("pawawax_pressesCancelled:withEvent:")
+            
+            swizzleOriginalSelector(originalBeganSelector, replaceWithSelector: swizzledBeganSelector)
+            swizzleOriginalSelector(originalEndedSelector, replaceWithSelector: swizzledEndedSelector)
+            swizzleOriginalSelector(originalCancelledSelector, replaceWithSelector: swizzledCancelledSelector)
+        }
+    }
+    
+    func pawawax_pressesBegan(presses: Set<UIPress>, withEvent event: UIPressesEvent?) {
+        self.pawawax_pressesBegan(presses, withEvent: event)
+        if !isKindOfClass(Pawaview.self) {
+            notifyPawaviewsOfPressesBegan(self, presses: presses, withEvent: event)
+        }
+    }
+    
+    private func notifyPawaviewsOfPressesBegan(view: UIView, presses: Set<UIPress>, withEvent event: UIPressesEvent?) {
+        if let meAsAPawaview = view as? Pawaview {
+            meAsAPawaview.pressesBegan(presses, withEvent: event)
+        }
+        
+        view.subviews.forEach {
+            notifyPawaviewsOfPressesBegan($0, presses: presses, withEvent: event)
+        }
+    }
+    
+    func pawawax_pressesEnded(presses: Set<UIPress>, withEvent event: UIPressesEvent?) {
+        self.pawawax_pressesEnded(presses, withEvent: event)
+        if !isKindOfClass(Pawaview.self) {
+            notifyPawaviewsOfPressesEnded(self, presses: presses, withEvent: event)
+        }
+    }
+    
+    private func notifyPawaviewsOfPressesEnded(view: UIView, presses: Set<UIPress>, withEvent event: UIPressesEvent?) {
+        if let meAsAPawaview = view as? Pawaview {
+            meAsAPawaview.pressesEnded(presses, withEvent: event)
+        }
+        
+        view.subviews.forEach {
+            notifyPawaviewsOfPressesEnded($0, presses: presses, withEvent: event)
+        }
+    }
+    
+    func pawawax_pressesCancelled(presses: Set<UIPress>, withEvent event: UIPressesEvent?) {
+        self.pawawax_pressesCancelled(presses, withEvent: event)
+        if !isKindOfClass(Pawaview.self) {
+            notifyPawaviewsOfPressesCancelled(self, presses: presses, withEvent: event)
+        }
+    }
+    
+    private func notifyPawaviewsOfPressesCancelled(view: UIView, presses: Set<UIPress>, withEvent event: UIPressesEvent?) {
+        if let meAsAPawaview = view as? Pawaview {
+            meAsAPawaview.pressesCancelled(presses, withEvent: event)
+        }
+        
+        view.subviews.forEach {
+            notifyPawaviewsOfPressesCancelled($0, presses: presses, withEvent: event)
         }
     }
 }
