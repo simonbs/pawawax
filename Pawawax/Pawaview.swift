@@ -13,7 +13,9 @@ import UIKit
 
 class Pawaview: UIView {
     let contentView = UIView()
-    private let glowImageView = UIImageView()
+    private let glowImageView = UIImageView(image: UIImage(named: "glow"))
+    private let shadowImageView = UIImageView(image: UIImage(named: "shadow"))
+    private let focusedShadowImageView = UIImageView(image: UIImage(named: "focused-shadow"))
     
     // Alpha of glow when the view has focus
     private static let GlowAlpha: CGFloat = 0.3
@@ -41,17 +43,10 @@ class Pawaview: UIView {
     // The scale is interpolated linearly.
     private static let SubviewsMinScale: CGFloat = 1
     
-    // Opacity of shadow when not focused
-    private static let ShadowAlpha: Float = 0.6
-    // Opacity of shadow when focused
-    private static let ShadowAlphaFocused: Float = 0.8
-    
-    // Size factor for the shadow when not focused.
-    // This is calculated as the height of the view divided by the factor.
-    private static let ShadowFactor: CGFloat = 14
-    // Size factor for the shadow when focused.
-    // This is calculated as the height of the view divided by the factor.
-    private static let ShadowFactorFocused: CGFloat = 10
+    // Opacity of the shadow when not focused.
+    private static let ShadowAlpha: CGFloat = 0.5
+    // Opacity of the shadow when focused.
+    private static let ShadowAlphaFocused: CGFloat = 0.5
     
     init() {
         super.init(frame: CGRectZero)
@@ -63,13 +58,19 @@ class Pawaview: UIView {
     }
     
     private func setup() {
-        glowImageView.image = UIImage(named: "glow")
         glowImageView.layer.zPosition = 1000
         glowImageView.alpha = 0
+        
+        shadowImageView.alpha = 0
+        focusedShadowImageView.alpha = 0
+        
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.clipsToBounds = true
         
+        clipsToBounds = false
         contentView.addSubview(glowImageView)
+        addSubview(shadowImageView)
+        addSubview(focusedShadowImageView)
         addSubview(contentView)
         
         addConstraint(contentView.leadingAnchor.constraintEqualToAnchor(leadingAnchor))
@@ -80,14 +81,33 @@ class Pawaview: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        updateShadow()
-        
         let glowImageLength = max(bounds.width, bounds.height) * Pawaview.GlowScale
         glowImageView.frame = CGRect(
             x: (bounds.width - glowImageLength) / 2,
             y: -glowImageLength / 2,
             width: glowImageLength,
             height: glowImageLength)
+        
+        
+        // Insets come from the image. Adjustments to the frame are magical.
+        // Note: here we do not want any shadows in the sides, so the shadow
+        // is smaller than the view.
+        let shadowInsets = UIEdgeInsetsMake(14, 13, 14, 13)
+        shadowImageView.frame = CGRect(
+            x: -shadowInsets.left / 2,
+            y: bounds.height - 4,
+            width: bounds.width + shadowInsets.left / 2 + shadowInsets.right / 2,
+            // Subtract something (i.e. "a small amount") to avoid flickering in the bottom
+            height: shadowInsets.bottom)
+        
+        // Insets come from the image. Adjustments to the frame are magical.
+        let focusedShadowInsets = UIEdgeInsetsMake(169, 169, 169, 169)
+        focusedShadowImageView.frame = CGRect(
+            x: -focusedShadowInsets.left / 4 * 3,
+            y: 0,
+            width: bounds.width + focusedShadowInsets.left / 4 * 3 + focusedShadowInsets.right / 4 * 3,
+            // Subtract something (i.e. "a small amount") to avoid flickering in the bottom
+            height: bounds.height + focusedShadowInsets.bottom - 2)
     }
     
     override func didUpdateFocusInContext(context: UIFocusUpdateContext, withAnimationCoordinator coordinator: UIFocusAnimationCoordinator) {
@@ -99,6 +119,10 @@ class Pawaview: UIView {
         
         let isAncestorFocused = focused || isDescendantOfView(nextFocusedView)
         coordinator.addCoordinatedAnimations({
+            let extraDuration = isAncestorFocused ? 0 : 0.2
+            let duration = UIView.inheritedAnimationDuration() + extraDuration
+            UIView.beginAnimations(nil, context: nil)
+            UIView.setAnimationDuration(duration)
             self.removeParallax()
             self.glowImageView.hidden = !isAncestorFocused
             self.glowImageView.alpha = isAncestorFocused ? Pawaview.GlowAlpha : 0
@@ -109,24 +133,19 @@ class Pawaview: UIView {
             } else {
                 self.transform = CGAffineTransformIdentity
             }
-            
-            self.updateShadow()
+
+            self.shadowImageView.alpha = isAncestorFocused ? 0 : Pawaview.ShadowAlpha
+            self.focusedShadowImageView.alpha = isAncestorFocused ? Pawaview.ShadowAlphaFocused : 0
+            UIView.commitAnimations()
         },
         completion: nil)
     }
     
-    private func updateShadow() {
-        let sizeFactor: CGFloat = focused ? Pawaview.ShadowFactorFocused : Pawaview.ShadowFactor
-        layer.shadowColor = UIColor.blackColor().CGColor
-        layer.shadowOpacity = focused ? Pawaview.ShadowAlphaFocused : Pawaview.ShadowAlpha
-        layer.shadowOffset = CGSizeMake(0, bounds.height / sizeFactor)
-        layer.shadowRadius = bounds.height / sizeFactor
-    }
-    
     private func addParallax() {
         glowImageView.currentPawawaxEffect = PawawaxEffect.motionEffectsForParallaxUsingRotation(Pawaview.Rotation, translation: bounds.width / 2)
+//        focusedShadowImageView.currentPawawaxEffect = PawawaxEffect.motionEffectsForParallaxUsingRotation(Pawaview.Rotation, translation: Pawaview.Translation)
         let filteredSubviews = contentView.subviews.filter({ $0 != glowImageView })
-        contentView.currentPawawaxEffect = PawawaxEffect.motionEffectsForParallaxUsingRotation(Pawaview.Rotation, translation: Pawaview.Translation)
+        currentPawawaxEffect = PawawaxEffect.motionEffectsForParallaxUsingRotation(Pawaview.Rotation, translation: Pawaview.Translation)
         filteredSubviews.enumerate().reverse().forEach { idx, view in
             // Interpolate the translation linearly
             let translation = (Pawaview.SubviewsMaxTranslation - Pawaview.SubviewsMinTranslation) / CGFloat(filteredSubviews.count) * CGFloat(idx)
@@ -139,7 +158,7 @@ class Pawaview: UIView {
     
     private func removeParallax() {
         glowImageView.currentPawawaxEffect = nil
-        let allViews = [ contentView ] + contentView.subviews
+        let allViews = [ self ] + contentView.subviews
         allViews.forEach { view in
             view.currentPawawaxEffect = nil
             view.transform = CGAffineTransformIdentity

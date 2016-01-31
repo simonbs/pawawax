@@ -38,28 +38,25 @@ class LandscapeView: Pawaview {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let backImageView = UIImageView(image: UIImage(named: "0"))
-        let backMountainImageView = UIImageView(image: UIImage(named: "1"))
-        let frontMountainsImageView = UIImageView(image: UIImage(named: "2"))
-        let moonImageView = UIImageView(image: UIImage(named: "3"))
-        let cloudsImageView = UIImageView(image: UIImage(named: "4"))
-        let backTreesImageView = UIImageView(image: UIImage(named: "5"))
-//        let frontTreesImageView = UIImageView(image: UIImage(named: "6"))
+        let moonImageView = UIImageView(image: UIImage(named: "1"))
+        let cloudsImageView = UIImageView(image: UIImage(named: "2"))
+        let backMountainImageView = UIImageView(image: UIImage(named: "3"))
+        let frontMountainsImageView = UIImageView(image: UIImage(named: "4"))
+        let backTressImageView = UIImageView(image: UIImage(named: "5"))
         
         backImageView.translatesAutoresizingMaskIntoConstraints = false
-        backMountainImageView.translatesAutoresizingMaskIntoConstraints = false
-        frontMountainsImageView.translatesAutoresizingMaskIntoConstraints = false
         moonImageView.translatesAutoresizingMaskIntoConstraints = false
         cloudsImageView.translatesAutoresizingMaskIntoConstraints = false
-        backTreesImageView.translatesAutoresizingMaskIntoConstraints = false
-//        frontTreesImageView.translatesAutoresizingMaskIntoConstraints = false
+        backMountainImageView.translatesAutoresizingMaskIntoConstraints = false
+        frontMountainsImageView.translatesAutoresizingMaskIntoConstraints = false
+        backTressImageView.translatesAutoresizingMaskIntoConstraints = false
         
         contentView.addSubview(backImageView)
         contentView.addSubview(moonImageView)
         contentView.addSubview(cloudsImageView)
         contentView.addSubview(backMountainImageView)
-        contentView.addSubview(frontMountainsImageView)
-        contentView.addSubview(backTreesImageView)
-//        contentView.addSubview(frontTreesImageView)
+//        contentView.addSubview(frontMountainsImageView)
+//        contentView.addSubview(backTreesImageView)
         contentView.addSubview(titleLabel)
         
         contentView.addConstraint(backImageView.leadingAnchor.constraintEqualToAnchor(contentView.leadingAnchor))
@@ -67,11 +64,6 @@ class LandscapeView: Pawaview {
         contentView.addConstraint(backImageView.topAnchor.constraintEqualToAnchor(contentView.topAnchor))
         contentView.addConstraint(backImageView.bottomAnchor.constraintEqualToAnchor(contentView.bottomAnchor))
         
-        contentView.addConstraint(backMountainImageView.leadingAnchor.constraintEqualToAnchor(contentView.leadingAnchor))
-        contentView.addConstraint(backMountainImageView.trailingAnchor.constraintEqualToAnchor(contentView.trailingAnchor))
-        contentView.addConstraint(backMountainImageView.topAnchor.constraintEqualToAnchor(contentView.topAnchor))
-        contentView.addConstraint(backMountainImageView.bottomAnchor.constraintEqualToAnchor(contentView.bottomAnchor))
-
         contentView.addConstraint(moonImageView.leadingAnchor.constraintEqualToAnchor(contentView.leadingAnchor))
         contentView.addConstraint(moonImageView.trailingAnchor.constraintEqualToAnchor(contentView.trailingAnchor))
         contentView.addConstraint(moonImageView.topAnchor.constraintEqualToAnchor(contentView.topAnchor))
@@ -80,19 +72,19 @@ class LandscapeView: Pawaview {
         contentView.addConstraint(cloudsImageView.leadingAnchor.constraintEqualToAnchor(contentView.leadingAnchor))
         contentView.addConstraint(cloudsImageView.trailingAnchor.constraintEqualToAnchor(contentView.trailingAnchor))
         contentView.addConstraint(cloudsImageView.topAnchor.constraintEqualToAnchor(contentView.topAnchor))
-        contentView.addConstraint(cloudsImageView.bottomAnchor.constraintEqualToAnchor(contentView.bottomAnchor))
 
-        contentView.addConstraint(frontMountainsImageView.leadingAnchor.constraintEqualToAnchor(contentView.leadingAnchor))
-        contentView.addConstraint(frontMountainsImageView.trailingAnchor.constraintEqualToAnchor(contentView.trailingAnchor))
-        contentView.addConstraint(frontMountainsImageView.bottomAnchor.constraintEqualToAnchor(contentView.bottomAnchor))
+        contentView.addConstraint(backMountainImageView.leadingAnchor.constraintEqualToAnchor(contentView.leadingAnchor))
+        contentView.addConstraint(backMountainImageView.trailingAnchor.constraintEqualToAnchor(contentView.trailingAnchor))
+        contentView.addConstraint(backMountainImageView.topAnchor.constraintEqualToAnchor(contentView.topAnchor))
+        contentView.addConstraint(backMountainImageView.bottomAnchor.constraintEqualToAnchor(contentView.bottomAnchor))
         
-        contentView.addConstraint(backTreesImageView.leadingAnchor.constraintEqualToAnchor(contentView.leadingAnchor))
-        contentView.addConstraint(backTreesImageView.trailingAnchor.constraintEqualToAnchor(contentView.trailingAnchor))
-        contentView.addConstraint(backTreesImageView.bottomAnchor.constraintEqualToAnchor(contentView.bottomAnchor))
-        
-//        contentView.addConstraint(frontTreesImageView.leadingAnchor.constraintEqualToAnchor(contentView.leadingAnchor))
-//        contentView.addConstraint(frontTreesImageView.trailingAnchor.constraintEqualToAnchor(contentView.trailingAnchor))
-//        contentView.addConstraint(frontTreesImageView.bottomAnchor.constraintEqualToAnchor(contentView.bottomAnchor))
+//        contentView.addConstraint(frontMountainsImageView.leadingAnchor.constraintEqualToAnchor(contentView.leadingAnchor))
+//        contentView.addConstraint(frontMountainsImageView.trailingAnchor.constraintEqualToAnchor(contentView.trailingAnchor))
+//        contentView.addConstraint(frontMountainsImageView.bottomAnchor.constraintEqualToAnchor(contentView.bottomAnchor))
+
+//        contentView.addConstraint(backTreesImageView.leadingAnchor.constraintEqualToAnchor(contentView.leadingAnchor))
+//        contentView.addConstraint(backTreesImageView.trailingAnchor.constraintEqualToAnchor(contentView.trailingAnchor))
+//        contentView.addConstraint(backTreesImageView.bottomAnchor.constraintEqualToAnchor(contentView.bottomAnchor))
         
         contentView.addConstraint(titleLabel.centerXAnchor.constraintEqualToAnchor(contentView.centerXAnchor))
         contentView.addConstraint(titleLabel.centerYAnchor.constraintEqualToAnchor(contentView.centerYAnchor))
