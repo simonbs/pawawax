@@ -143,7 +143,6 @@ class Pawaview: UIView {
     
     private func addParallax() {
         glowImageView.currentPawawaxEffect = PawawaxEffect.motionEffectsForParallaxUsingRotation(Pawaview.Rotation, translation: bounds.width / 2)
-//        focusedShadowImageView.currentPawawaxEffect = PawawaxEffect.motionEffectsForParallaxUsingRotation(Pawaview.Rotation, translation: Pawaview.Translation)
         let filteredSubviews = contentView.subviews.filter({ $0 != glowImageView })
         currentPawawaxEffect = PawawaxEffect.motionEffectsForParallaxUsingRotation(Pawaview.Rotation, translation: Pawaview.Translation)
         filteredSubviews.enumerate().reverse().forEach { idx, view in
