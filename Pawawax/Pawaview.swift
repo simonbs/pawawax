@@ -26,9 +26,9 @@ class Pawaview: UIView {
     // Scale of the view when focused
     private static let FocusScale: CGFloat = 1.088
     // Rotation of the motion effect applied to the view
-    private static let Rotation: CGFloat = 0.05
+    private static let Rotation: CGFloat = 0.035
     // Translation of the motion effect applied to the view
-    private static let Translation: CGFloat = 10
+    private static let Translation: CGFloat = 8
     
     // Maximum translation of the motion effect applied to the subviews.
     // The translation is interpolated linearly.
