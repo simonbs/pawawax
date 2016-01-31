@@ -12,8 +12,6 @@ import UIKit
 // MARK: - Pawaview
 
 class Pawaview: UIView {
-    private static let defaultEffect = PawawaxEffect.motionEffectsForParallaxUsingRotation(Pawaview.Rotation, translation: Pawaview.Translation)
-    
     let contentView = UIView()
     private let glowImageView = UIImageView(image: UIImage(named: "glow"))
     private let shadowImageView = UIImageView(image: UIImage(named: "shadow"))
@@ -27,8 +25,6 @@ class Pawaview: UIView {
     
     // Scale of the view when focused
     private static let FocusScale: CGFloat = 1.088
-    // Rotation of the motion effect applied to the view
-    private static let Rotation: CGFloat = 0.035
     // Translation of the motion effect applied to the view
     private static let Translation: CGFloat = 8
     
@@ -143,24 +139,30 @@ class Pawaview: UIView {
 
             if isAncestorFocused {
                 self.isCurrentlyAdjusting = true
-                self.transform = CGAffineTransformMakeScale(Pawaview.FocusScale, Pawaview.FocusScale)
                 self.addParallax()
+                self.transform = CGAffineTransformMakeScale(Pawaview.FocusScale, Pawaview.FocusScale)
             } else {
                 self.isCurrentlyAdjusting = false
                 self.transform = CGAffineTransformIdentity
             }
-
+            UIView.commitAnimations()
+            
             self.shadowImageView.alpha = isAncestorFocused ? 0 : Pawaview.ShadowAlpha
             self.focusedShadowImageView.alpha = isAncestorFocused ? Pawaview.ShadowAlphaFocused : 0
-            UIView.commitAnimations()
         },
         completion: nil)
     }
     
     private func addParallax() {
-        glowImageView.currentPawawaxEffect = PawawaxEffect.motionEffectsForParallaxUsingRotation(Pawaview.Rotation, translation: bounds.width / 2)
+        // Magic numbers
+        let suggestedSizeIncrease: CGFloat = 90
+        let maxRotation: CGFloat = 0.15
+        let increasedSize = bounds.width * Pawaview.FocusScale - bounds.width
+        let translation = suggestedSizeIncrease - increasedSize
+        let rotation = abs(maxRotation * (translation / suggestedSizeIncrease))
+        currentPawawaxEffect = PawawaxEffect.motionEffectsForParallaxUsingRotation(rotation, translation: Pawaview.Translation)
+        glowImageView.currentPawawaxEffect = PawawaxEffect.motionEffectsForParallaxUsingRotation(rotation, translation: bounds.width / 2)
         let filteredSubviews = contentView.subviews.filter({ $0 != glowImageView })
-        currentPawawaxEffect = Pawaview.defaultEffect
         filteredSubviews.enumerate().reverse().forEach { idx, view in
             // Interpolate the translation linearly
             let translation = (Pawaview.SubviewsMaxTranslation - Pawaview.SubviewsMinTranslation) / CGFloat(filteredSubviews.count) * CGFloat(idx)
